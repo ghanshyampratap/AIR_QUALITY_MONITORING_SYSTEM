@@ -1,0 +1,93 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <DHT.h>
+
+// OLED setup
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// DHT11 setup
+#define DHTPIN 4
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+// Dust sensor setup
+#define DUST_LED_PIN 3
+#define DUST_VO_PIN A0
+const float VREF = 5.0;
+const float K = 0.17;
+
+// MQ135 setup
+#define MQ135_PIN A1
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(DUST_LED_PIN, OUTPUT);
+  digitalWrite(DUST_LED_PIN, HIGH);
+
+  dht.begin();
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("OLED not found");
+    while (true);
+  }
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println("Air Monitor Ready");
+  display.display();
+  delay(2000);
+}
+
+float readDustDensity() {
+  digitalWrite(DUST_LED_PIN, LOW);
+  delayMicroseconds(280);
+  int voReading = analogRead(DUST_VO_PIN);
+  delayMicroseconds(40);
+  digitalWrite(DUST_LED_PIN, HIGH);
+  delayMicroseconds(9680);
+
+  float voVoltage = voReading * (VREF / 1024.0);
+  float dustVoltage = voVoltage - 0.6;
+  if (dustVoltage < 0) dustVoltage = 0;
+  return (dustVoltage / K) * 1000.0; // Convert mg/m3 to ug/m3
+}
+
+void loop() {
+  // Read dust
+  float dustDensity = readDustDensity();
+
+  // Read DHT11
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+
+  // Read MQ135
+  int mqRaw = analogRead(MQ135_PIN);
+  float mqVoltage = mqRaw * (VREF / 1024.0);
+
+  // Serial output
+  Serial.println("====================================");
+  Serial.print("Dust: "); Serial.print(dustDensity, 1); Serial.println(" ug/m3");
+  Serial.print("Temp: "); Serial.print(temp); Serial.println(" C");
+  Serial.print("Hum: "); Serial.print(hum); Serial.println(" %");
+  Serial.print("MQ135: "); Serial.print(mqVoltage, 2); Serial.println(" V");
+
+  // OLED output
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.println("Air Quality Monitor");
+  display.println("--------------------");
+  display.print("D: "); display.print(dustDensity, 1); display.println("ug/m3");
+  display.print("T: "); display.print(temp); display.println(" C");
+  display.print("H: "); display.print(hum); display.println(" %");
+  display.print("G: "); display.print(mqVoltage, 2); display.println(" V");
+  display.display();
+
+  delay(2000);
+}
