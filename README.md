@@ -38,8 +38,11 @@ It uses **DHT11** for temperature & humidity, **MQ135** for harmful gases, and *
 | **OLED** | SDA → A4, SCL → A5 |
 
 ## 📦 Block Diagram
-![Block Diagram](<img width="621" height="306" alt="image" src="https://github.com/user-attachments/assets/c8852ff4-3f03-4a95-819b-5a406f0efccd" />
-)
+<img width="621" height="306" alt="image" src="https://github.com/user-attachments/assets/e78242a5-000f-4a6e-8748-ad9e00ec0c1c" />
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e7c7da11-eb4d-42a3-89fe-4ce34790169d" />
+
+
 
 ## 📜 How It Works
 1. Sensors collect environmental data.
@@ -66,7 +69,6 @@ It uses **DHT11** for temperature & humidity, **MQ135** for harmful gases, and *
 - Detected **temperature & humidity** changes in real time.
 - Works well for **indoor monitoring** and educational purposes.
   
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/1cf8eef0-4a87-4939-9175-50210219eb66" />
 
 ![WhatsApp Image 2025-08-16 at 01 05 36_a429da44](https://github.com/user-attachments/assets/8bd906b5-dbfa-4ac9-9a85-f8a9915f8846)
 
