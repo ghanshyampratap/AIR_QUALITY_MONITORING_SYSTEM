@@ -40,7 +40,7 @@ It uses **DHT11** for temperature & humidity, **MQ135** for harmful gases, and *
 ## 📦 Block Diagram
 <img width="621" height="306" alt="image" src="https://github.com/user-attachments/assets/e78242a5-000f-4a6e-8748-ad9e00ec0c1c" />
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e7c7da11-eb4d-42a3-89fe-4ce34790169d" />
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/e9381289-9f39-4527-95ef-120eca5718e7" />
 
 
 
